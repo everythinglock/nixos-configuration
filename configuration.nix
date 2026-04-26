@@ -2,22 +2,33 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, pkgsUnstable, ... }:
+{
+  lib,
+  pkgs,
+  pkgsUnstable,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nix.settings.substituters = lib.mkBefore [
     "https://mirror.nju.edu.cn/nix-channels/store"
     "https://cache.nixos.org"
   ];
 
-  nix.settings.trusted-users = [ "root" "@wheel" ];
+  nix.settings.trusted-users = [
+    "root"
+    "@wheel"
+  ];
 
   # Bootloader
   boot.loader.limine = {
@@ -35,11 +46,11 @@
         palette = "1e1e2e;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;cdd6f4";
         # 亮色: 深灰, 亮红, 亮绿, 黄, 亮蓝, 亮洋红, 亮青, 白
         brightPalette = "585b70;f38ba8;a6e3a1;f9e2af;89b4fa;f5c2e7;94e2d5;a6adc8";
-        
+
         # 背景色和前景色
         background = "1e1e2e"; # 深邃的暗背景
         foreground = "cdd6f4"; # 柔和的亮灰白文本
-        
+
         brightBackground = "1e1e2e";
         brightForeground = "f5e0dc"; # 带一丝粉调的亮色文本
       };
@@ -53,34 +64,34 @@
   hardware = {
     # 启用OpenGL
     graphics = {
-        enable = true;
-        enable32Bit = true; # 支持32位应用
+      enable = true;
+      enable32Bit = true; # 支持32位应用
     };
     enableRedistributableFirmware = true; # 可分发固件（显卡、网卡固件）
     # 根据cpu型号选择，全开可保持在不同机器上的兼容
     cpu.amd.updateMicrocode = true;
     cpu.intel.updateMicrocode = true;
     nvidia = {
-        open = true; # 官方开源驱动，仅新卡可用
-        modesetting.enable = true; # 开启modesetting内核，配合prime工具
-        nvidiaSettings = true; # 安装nvidia-setting gui工具
-        # 选择驱动版本stable
-        prime = {
-          offload = {
-            enable = true;
-            enableOffloadCmd = true; # 生成一个nvidia-offload命令
-          };
-	  # 重要：用 lspci | grep -E "VGA|3D" 查询实际 Bus ID
-          nvidiaBusId = "PCI:1:0:0";
-          amdgpuBusId = "PCI:6:0:0";
+      open = true; # 官方开源驱动，仅新卡可用
+      modesetting.enable = true; # 开启modesetting内核，配合prime工具
+      nvidiaSettings = true; # 安装nvidia-setting gui工具
+      # 选择驱动版本stable
+      prime = {
+        offload = {
+          enable = true;
+          enableOffloadCmd = true; # 生成一个nvidia-offload命令
         };
-        # 电源管理
-        powerManagement.enable = true;
-        powerManagement.finegrained = true; # 细粒度电源管理
+        # 重要：用 lspci | grep -E "VGA|3D" 查询实际 Bus ID
+        nvidiaBusId = "PCI:1:0:0";
+        amdgpuBusId = "PCI:6:0:0";
+      };
+      # 电源管理
+      powerManagement.enable = true;
+      powerManagement.finegrained = true; # 细粒度电源管理
     };
   };
   # 默认调用nvidia，无nvidia会退回其他驱动
-  services.xserver.videoDrivers = [ "nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -116,9 +127,12 @@
 
     fontconfig = {
       defaultFonts = {
-        monospace = [ "JetBrains Mono" "Sarasa Gothic SC" ];
-	sansSerif = [ "Sans Serif" ];
-	serif = [ "Serif" ];
+        monospace = [
+          "JetBrains Mono"
+          "Sarasa Gothic SC"
+        ];
+        sansSerif = [ "Sans Serif" ];
+        serif = [ "Serif" ];
       };
     };
   };
@@ -140,26 +154,26 @@
     enable = true;
     keyboards = {
       default = {
-        ids = [ "*" ];               # 应用到所有键盘
+        ids = [ "*" ]; # 应用到所有键盘
         settings = {
           main = {
-            capslock = "overload(control, esc)";   # 短按 Esc，长按 Ctrl
-            space    = "overload(nav, space)";     # 短按空格，长按导航层
-            rightctrl = "macro(ctrl+space)";       # 按一下切换 fcitx5 输入法
-            rightalt  = "overload(shift, enter)";  # 按住 Shift，短按回车
+            capslock = "overload(control, esc)"; # 短按 Esc，长按 Ctrl
+            space = "overload(nav, space)"; # 短按空格，长按导航层
+            rightalt = "overload(shift, enter)"; # 按住 Shift，短按回车
           };
           nav = {
             # 导航层（按住空格时激活）
-            j         = "down";
-            k         = "up";
-            h         = "left";
-            l         = "right";
-            n         = "backspace";
-            m         = "del";
-	    a         = "home";
-	    e         = "end";
-	    u         = "pageup";
-	    d         = "pagedown";
+            s = "space";
+            j = "down";
+            k = "up";
+            h = "left";
+            l = "right";
+            n = "backspace";
+            m = "del";
+            a = "home";
+            e = "end";
+            u = "pageup";
+            d = "pagedown";
             semicolon = "enter";
           };
         };
@@ -206,17 +220,17 @@
   users.users.fd = {
     isNormalUser = true;
     description = "fd";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
   # Install firefox.
   programs.firefox.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -225,8 +239,8 @@
     neovim
     git
     pkgsUnstable.noctalia-shell
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
