@@ -159,22 +159,46 @@
           main = {
             capslock = "overload(control, esc)"; # 短按 Esc，长按 Ctrl
             space = "overload(nav, space)"; # 短按空格，长按导航层
-            rightalt = "overload(shift, enter)"; # 按住 Shift，短按回车
+            tab = "overload(number, tab)"; # 按住 数字层，短按回车
+            rightalt = "overload(shift, enter)"; # 短按enter，长按shift
           };
           nav = {
             # 导航层（按住空格时激活）
-            s = "space";
             j = "down";
             k = "up";
             h = "left";
             l = "right";
+            comma = "home";
+            dot = "end";
+            f = "pageup";
+            b = "pagedown";
+            # 输入层
+            s = "space";
+            y = "=";
+            u = "+";
+            i = "-";
+            o = "*";
+            p = "/";
+            r = "(";
+            t = ")";
+            apostrophe = "|";
+            v = "~";
+            e = "enter";
             n = "backspace";
             m = "del";
-            a = "home";
-            e = "end";
-            u = "pageup";
-            d = "pagedown";
-            semicolon = "enter";
+          };
+          number = {
+            # 数字
+            m = "1";
+            comma = "2";
+            dot = "3";
+            j = "4";
+            k = "5";
+            l = "6";
+            u = "7";
+            i = "8";
+            o = "9";
+            n = "0";
           };
         };
       };
@@ -224,7 +248,7 @@
       "networkmanager"
       "wheel"
     ];
-    packages = with pkgs; [
+    packages = [
       #  thunderbird
     ];
   };
