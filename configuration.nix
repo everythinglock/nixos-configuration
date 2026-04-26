@@ -11,24 +11,26 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
 
-  nix.settings.substituters = lib.mkBefore [
-    "https://mirror.nju.edu.cn/nix-channels/store"
-    "https://cache.nixos.org"
-  ];
+    substituters = lib.mkBefore [
+      "https://mirror.nju.edu.cn/nix-channels/store"
+      "https://mirror.tuna.tsinghua.edu.cn/nix-channels/store"
+      "https://cache.nixos.org"
+    ];
 
-  nix.settings.trusted-users = [
-    "root"
-    "@wheel"
-  ];
+    trusted-users = [
+      "root"
+      "@wheel"
+    ];
+  };
 
   # Bootloader
   boot.loader.limine = {
@@ -104,18 +106,19 @@
   time.timeZone = "Asia/Shanghai";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "zh_CN.UTF-8";
-    LC_IDENTIFICATION = "zh_CN.UTF-8";
-    LC_MEASUREMENT = "zh_CN.UTF-8";
-    LC_MONETARY = "zh_CN.UTF-8";
-    LC_NAME = "zh_CN.UTF-8";
-    LC_NUMERIC = "zh_CN.UTF-8";
-    LC_PAPER = "zh_CN.UTF-8";
-    LC_TELEPHONE = "zh_CN.UTF-8";
-    LC_TIME = "zh_CN.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "zh_CN.UTF-8";
+      LC_IDENTIFICATION = "zh_CN.UTF-8";
+      LC_MEASUREMENT = "zh_CN.UTF-8";
+      LC_MONETARY = "zh_CN.UTF-8";
+      LC_NAME = "zh_CN.UTF-8";
+      LC_NUMERIC = "zh_CN.UTF-8";
+      LC_PAPER = "zh_CN.UTF-8";
+      LC_TELEPHONE = "zh_CN.UTF-8";
+      LC_TIME = "zh_CN.UTF-8";
+    };
   };
 
   fonts = {
@@ -159,8 +162,7 @@
           main = {
             capslock = "overload(control, esc)"; # 短按 Esc，长按 Ctrl
             space = "overload(nav, space)"; # 短按空格，长按导航层
-            tab = "overload(number, tab)"; # 按住 数字层，短按回车
-            rightalt = "overload(shift, enter)"; # 短按enter，长按shift
+            rightalt = "overload(nums, enter)"; # 短按enter，长按数字层
           };
           nav = {
             # 导航层（按住空格时激活）
@@ -168,8 +170,8 @@
             k = "up";
             h = "left";
             l = "right";
-            comma = "home";
-            dot = "end";
+            a = "home";
+            e = "end";
             f = "pageup";
             b = "pagedown";
             # 输入层
@@ -183,22 +185,23 @@
             t = ")";
             apostrophe = "|";
             v = "~";
-            e = "enter";
+            w = "enter";
             n = "backspace";
             m = "del";
           };
-          number = {
+          nums = {
             # 数字
-            m = "1";
-            comma = "2";
-            dot = "3";
-            j = "4";
-            k = "5";
-            l = "6";
-            u = "7";
-            i = "8";
-            o = "9";
-            n = "0";
+            a = "1";
+            s = "2";
+            d = "3";
+            f = "4";
+            g = "5";
+            h = "6";
+            j = "7";
+            k = "8";
+            l = "9";
+            semicolon = "0";
+            n = "backspace";
           };
         };
       };
@@ -260,6 +263,7 @@
   # $ nix search wget
   _module.args.pkgsUnstable = pkgsUnstable;
   environment.systemPackages = with pkgs; [
+    gnumake
     neovim
     git
     pkgsUnstable.noctalia-shell
@@ -274,13 +278,13 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  programs.clash-verge = {
-    enable = true;
-    serviceMode = true;
-    tunMode = true;
-  };
-  networking.firewall.trustedInterfaces = [ "Meta" ];
-  networking.firewall.checkReversePath = "loose";
+  # v2raya,端口localhost:2017
+  services.v2raya.enable = true;
+  # networking.firewall.allowedTCPPorts = [ 2017 ];
+  # networking.firewall.allowedUDPPorts = [ 2017 ];
+  # tun模式需要修改防火墙设置
+  # networking.firewall.checkReversePath = "loose";
+  # networking.firewall.trustedInterfaces = [ "tun0" ]; # 根据ip a的结果修改成对应名字
 
   programs.niri.enable = true;
 
