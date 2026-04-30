@@ -140,19 +140,6 @@
     };
   };
 
-  i18n.inputMethod = {
-    enable = true;
-    type = "fcitx5";
-    fcitx5.waylandFrontend = true;
-    fcitx5.addons = with pkgs; [
-      fcitx5-gtk
-      libsForQt5.fcitx5-qt
-      kdePackages.fcitx5-configtool
-      qt6Packages.fcitx5-chinese-addons
-      fcitx5-rime
-    ];
-  };
-
   services.keyd = {
     enable = true;
     keyboards = {
@@ -163,6 +150,7 @@
             capslock = "overload(control, esc)"; # 短按 Esc，长按 Ctrl
             space = "overload(nav, space)"; # 短按空格，长按导航层
             rightalt = "overload(nums, enter)"; # 短按enter，长按数字层
+            apostrophe = "overload(shift, apostrophe)";
           };
           nav = {
             # 导航层（按住空格时激活）
@@ -286,7 +274,10 @@
   # networking.firewall.checkReversePath = "loose";
   # networking.firewall.trustedInterfaces = [ "tun0" ]; # 根据ip a的结果修改成对应名字
 
-  programs.niri.enable = true;
+  programs.niri = {
+    enable = true;
+    package = pkgsUnstable.niri;
+  };
 
   # List services that you want to enable:
 
