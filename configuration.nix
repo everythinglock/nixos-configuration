@@ -33,8 +33,10 @@
   };
 
   # Bootloader
+  boot.loader.systemd-boot.enable = false;
   boot.loader.limine = {
     enable = true;
+    efiInstallAsRemovable = true;
     style = {
       # 隐藏顶部的按键提示
       interface.helpHidden = true;
@@ -153,7 +155,6 @@
             apostrophe = "overload(shift, apostrophe)";
           };
           nav = {
-            # 导航层（按住空格时激活）
             j = "down";
             k = "up";
             h = "left";
@@ -162,7 +163,6 @@
             e = "end";
             f = "pageup";
             b = "pagedown";
-            # 输入层
             s = "space";
             y = "=";
             u = "+";
@@ -175,7 +175,7 @@
             v = "~";
             w = "enter";
             n = "backspace";
-            m = "del";
+            m = "delete";
           };
           nums = {
             # 数字
