@@ -152,7 +152,6 @@
             capslock = "overload(control, esc)"; # 短按 Esc，长按 Ctrl
             space = "overload(nav, space)"; # 短按空格，长按导航层
             rightalt = "overload(nums, enter)"; # 短按enter，长按数字层
-            apostrophe = "overload(shift, apostrophe)";
           };
           nav = {
             j = "down";
@@ -238,6 +237,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     packages = [
       #  thunderbird
@@ -289,6 +289,9 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # virtual
+  virtualisation.docker.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
