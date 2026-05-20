@@ -210,6 +210,8 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  # Enable HP Driver
+  services.printing.drivers = [ pkgs.hplipWithPlugin ];
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -238,7 +240,9 @@
       "networkmanager"
       "wheel"
       "docker"
+      "lp"
     ];
+    shell = pkgs.zsh;
     packages = [
       #  thunderbird
     ];
@@ -249,7 +253,6 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  _module.args.pkgsUnstable = pkgsUnstable;
   environment.systemPackages = with pkgs; [
     gnumake
     neovim
@@ -274,10 +277,8 @@
   # networking.firewall.checkReversePath = "loose";
   # networking.firewall.trustedInterfaces = [ "tun0" ]; # 根据ip a的结果修改成对应名字
 
-  programs.niri = {
-    enable = true;
-    package = pkgsUnstable.niri;
-  };
+  programs.zsh.enable = true;
+  programs.niri.enable = true;
 
   # List services that you want to enable:
 
